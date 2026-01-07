@@ -2,4 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Material Design 3 Color Palette -->
+    <color name="primary">#006C4C</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="secondary">#4C6C00</color>
+    <color name="background">#F9FAFB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#BA1A1A</color>
+    <color name="text_primary">#191C1C</color>
+    <color name="text_secondary">#414941</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="status_badge_bg">#E8F5E9</color>
+    <color name="status_badge_text">#2E7D32</color>
 </resources>

@@ -4,14 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.tubes_pemrograman_mobile"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.tubes_pemrograman_mobile"
         minSdk = 22
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -41,7 +39,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    
+    // Network
     implementation("com.android.volley:volley:1.2.1")
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
-    implementation("com.google.android.material:material:1.9.0")
+    
+    // UI Components
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 }
