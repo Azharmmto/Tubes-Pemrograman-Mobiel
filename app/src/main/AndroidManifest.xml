@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tubes_Pemrograman_Mobile"
         android:usesCleartextTraffic="true">
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
@@ -30,6 +29,12 @@
         <activity
             android:name=".BuatLaporanActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".EditProfileActivity" android:exported="false"
+            android:label="Edit Profil"
+            android:parentActivityName=".DashboardActivity"/>
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">

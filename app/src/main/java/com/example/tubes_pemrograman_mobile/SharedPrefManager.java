@@ -30,6 +30,13 @@ public class SharedPrefManager {
         editor.apply();
     }
 
+    public void updateNama(String namaBaru) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_NAMA, namaBaru);
+        editor.apply();
+    }
+
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.contains(KEY_ID_USER);
