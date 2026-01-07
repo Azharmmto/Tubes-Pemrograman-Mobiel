@@ -3,6 +3,7 @@ package com.example.tubes_pemrograman_mobile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ import java.util.List;
 public class DashboardActivity extends AppCompatActivity {
 
     private RecyclerView rvLaporan;
-    private TextView tvEmpty;
+    private LinearLayout tvEmpty;
     private FloatingActionButton fabAdd;
     private final List<Laporan> laporanList = new ArrayList<>();
     private LaporanAdapter adapter;
