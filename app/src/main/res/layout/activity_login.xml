@@ -8,9 +8,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/surface"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,30 +27,32 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Selamat Datang"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:layout_marginBottom="8dp" />
+                android:text="Selamat Datang"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login ke akun Laporpak Anda"
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="32dp"
                 android:gravity="center"
-                android:layout_marginBottom="32dp" />
+                android:text="Login ke akun Laporpak Anda"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
-                app:helperText="Masukkan email terdaftar"
-                app:helperTextEnabled="true"
+                android:textColorHint="@color/divider"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/primary"
+                app:helperText="Masukkan email terdaftar"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/text_secondary"
                 app:hintTextColor="@color/primary">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -66,12 +68,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Password"
-                app:helperText="Masukkan kata sandi"
-                app:helperTextEnabled="true"
+                android:textColorHint="@color/divider"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/primary"
-                app:hintTextColor="@color/primary"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:helperText="Masukkan kata sandi"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/text_secondary"
+                app:hintTextColor="@color/primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -87,11 +91,11 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="24dp"
                 android:text="Login"
+                android:textColor="@color/on_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/primary"
-                app:cornerRadius="8dp"
-                android:textColor="@color/on_primary" />
+                app:cornerRadius="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,12 +115,12 @@
                     android:id="@+id/tvRegister"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:text="Daftar di sini"
                     android:textColor="@color/primary"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

@@ -46,7 +46,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Judul Laporan"
+                    android:textColorHint="@color/divider"
                     app:helperText="Buat judul yang jelas dan ringkas"
+                    app:helperTextTextColor="@color/text_secondary"
                     app:helperTextEnabled="true"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/primary"
@@ -66,7 +68,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="Deskripsi Lengkap"
+                    android:textColorHint="@color/divider"
                     app:helperText="Jelaskan kejadian secara detail dan kronologis"
+                    app:helperTextTextColor="@color/text_secondary"
                     app:helperTextEnabled="true"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/primary"
@@ -91,8 +95,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="Lokasi Kejadian"
-                    app:helperText="Contoh: Jl. Merdeka No. 10, Kota"
+                    android:textColorHint="@color/divider"
+                    app:helperText="Contoh: Jl. Perintis Kemerdekaan No. 10"
                     app:helperTextEnabled="true"
+                    app:helperTextTextColor="@color/text_secondary"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/primary"
                     app:hintTextColor="@color/primary"
@@ -104,8 +110,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapWords"
-                        android:textColor="@color/text_primary"
-                        android:maxLines="2" />
+                        android:maxLines="2"
+                        android:textColor="@color/text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
