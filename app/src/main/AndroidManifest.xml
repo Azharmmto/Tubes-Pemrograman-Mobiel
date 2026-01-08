@@ -14,21 +14,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tubes_Pemrograman_Mobile"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Daftar Akun"
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".DetailLaporanActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Detail Laporan"
+            android:parentActivityName=".DashboardActivity"/>
         <activity
             android:name=".DashboardActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Lapor Pak!"
+            android:theme="@style/Theme.Tubes_Pemrograman_Mobile.NoActionBar" />
         <activity
             android:name=".BuatLaporanActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Buat Laporan"
+            android:parentActivityName=".DashboardActivity"/>
 
         <activity
             android:name=".EditProfileActivity" android:exported="false"
@@ -37,13 +47,16 @@
 
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Tubes_Pemrograman_Mobile.NoActionBar">
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

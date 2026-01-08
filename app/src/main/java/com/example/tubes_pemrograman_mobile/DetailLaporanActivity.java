@@ -3,6 +3,7 @@ package com.example.tubes_pemrograman_mobile;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,12 @@ public class DetailLaporanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_laporan);
 
+        // tombol back
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Detail Laporan");
+        }
+
         tvJudul = findViewById(R.id.tvDetailJudul);
         tvDeskripsi = findViewById(R.id.tvDetailDeskripsi);
         tvLokasi = findViewById(R.id.tvDetailLokasi);
@@ -40,6 +47,16 @@ public class DetailLaporanActivity extends AppCompatActivity {
         tvStatus.setText(getIntent().getStringExtra("status"));
 
         fetchTanggapan();
+    }
+
+    // ketika tombol di click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void fetchTanggapan() {

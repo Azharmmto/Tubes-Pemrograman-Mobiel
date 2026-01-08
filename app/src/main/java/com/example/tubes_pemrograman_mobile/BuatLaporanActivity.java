@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,12 @@ public class BuatLaporanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buat_laporan);
 
+        // tombol back
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Buat Laporan"); // Opsional: Set judul
+        }
+
         etJudul = findViewById(R.id.etJudul);
         etDeskripsi = findViewById(R.id.etDeskripsi);
         etLokasi = findViewById(R.id.etLokasi);
@@ -34,6 +41,17 @@ public class BuatLaporanActivity extends AppCompatActivity {
 
         btnKirim.setOnClickListener(v -> kirimLaporan());
     }
+
+    // --- TAMBAHKAN FUNGSI INI AGAR TOMBOL BACK BERFUNGSI ---
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Menutup activity ini dan kembali ke sebelumnya
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    // --------------------------------------------------------
 
     private void kirimLaporan() {
         final String judul = etJudul.getText().toString().trim();

@@ -12,5 +12,10 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <style name="Theme.Tubes_Pemrograman_Mobile.NoActionBar" parent="Theme.Tubes_Pemrograman_Mobile">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="Theme.Tubes_Pemrograman_Mobile" parent="Base.Theme.Tubes_Pemrograman_Mobile" />
 </resources>

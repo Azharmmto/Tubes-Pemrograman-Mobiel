@@ -3,6 +3,7 @@ package com.example.tubes_pemrograman_mobile;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +27,12 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        // tombol back
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Edit Profil");
+        }
+
         etNama = findViewById(R.id.etEditNama);
         etEmail = findViewById(R.id.etEditEmail);
         etHp = findViewById(R.id.etEditHP);
@@ -37,6 +44,16 @@ public class EditProfileActivity extends AppCompatActivity {
         etNama.setText(SharedPrefManager.getInstance(this).getNamaLengkap());
 
         btnSimpan.setOnClickListener(v -> updateProfil());
+    }
+
+    // ketika back di click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateProfil() {
