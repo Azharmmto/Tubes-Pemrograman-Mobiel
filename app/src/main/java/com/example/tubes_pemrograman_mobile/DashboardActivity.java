@@ -35,7 +35,6 @@ import android.widget.ImageView;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // ... (Variabel lain tetap sama)
     private RecyclerView rvLaporan;
     private LinearLayout tvEmpty;
     private FloatingActionButton fabAdd;
@@ -70,7 +69,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             if (navigationView.getHeaderCount() > 0) {
                 View headerView = navigationView.getHeaderView(0);
                 tvNavName = headerView.findViewById(R.id.tvNavName);
-                // ivNavProfil = headerView.findViewById(R.id.ivNavProfil); // Uncomment jika sudah ada ID ini
+                ivNavProfil = headerView.findViewById(R.id.ivNavProfil);
 
                 updateHeaderInfo(); // Update nama saat awal
             }

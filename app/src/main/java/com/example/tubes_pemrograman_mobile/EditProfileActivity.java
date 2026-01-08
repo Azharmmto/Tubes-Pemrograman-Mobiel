@@ -42,7 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        etNama.setText(SharedPrefManager.getInstance(this).getNamaLengkap());
+
 
         etNama = findViewById(R.id.etEditNama);
         etEmail = findViewById(R.id.etEditEmail);
@@ -50,6 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
         btnSimpan = findViewById(R.id.btnSimpanProfil);
         btnGantiFoto = findViewById(R.id.btnGantiFoto);
         ivProfil = findViewById(R.id.ivProfil);
+
 
         etNama.setText(SharedPrefManager.getInstance(this).getNamaLengkap());
         // Idealnya load data lain dan foto profil dari API "get_user_detail" di sini
