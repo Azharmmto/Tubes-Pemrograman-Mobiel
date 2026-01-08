@@ -67,7 +67,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (obj.getBoolean("success")) {
                             int idUser = obj.getInt("id_user");
                             String nama = obj.getString("nama_lengkap");
-                            SharedPrefManager.getInstance(getApplicationContext()).userLogin(idUser, nama);
+                            String foto = obj.optString("foto_profil", ""); // Ambil foto
+
+                            // Panggil userLogin yang baru
+                            SharedPrefManager.getInstance(getApplicationContext()).userLogin(idUser, nama, foto);
+
                             Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                             finish();

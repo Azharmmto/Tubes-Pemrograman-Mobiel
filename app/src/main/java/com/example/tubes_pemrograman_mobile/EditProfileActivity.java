@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -41,6 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        etNama.setText(SharedPrefManager.getInstance(this).getNamaLengkap());
 
         etNama = findViewById(R.id.etEditNama);
         etEmail = findViewById(R.id.etEditEmail);
@@ -54,6 +56,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         btnGantiFoto.setOnClickListener(v -> pilihFoto());
         btnSimpan.setOnClickListener(v -> updateProfil());
+
+        String fotoLama = SharedPrefManager.getInstance(this).getFoto();
+        if (!fotoLama.isEmpty()) {
+            String urlFoto = URLs.BASE_URL + "backend_api/uploads/profil/" + fotoLama;
+            ImageRequest imageRequest = new ImageRequest(urlFoto,
+                    response -> ivProfil.setImageBitmap(response),
+                    0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565, null);
+            VolleySingleton.getInstance(this).addToRequestQueue(imageRequest);
+        }
     }
 
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
@@ -134,6 +145,13 @@ public class EditProfileActivity extends AppCompatActivity {
                         JSONObject obj = new JSONObject(response);
                         if (obj.getBoolean("success")) {
                             SharedPrefManager.getInstance(getApplicationContext()).updateNama(nama);
+
+                            // CEK APAKAH ADA FOTO BARU DARI SERVER
+                            String fotoBaru = obj.optString("foto_profil", "");
+                            if (!fotoBaru.isEmpty()) {
+                                SharedPrefManager.getInstance(getApplicationContext()).updateFoto(fotoBaru);
+                            }
+
                             Toast.makeText(this, obj.getString("message"), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
