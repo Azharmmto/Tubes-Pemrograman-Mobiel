@@ -1,34 +1,44 @@
 <?php
-  header("Content-Type: application/json");
-  require_once "koneksi.php";
 
-  $id_user = isset($_GET['id_user']) ? $_GET['id_user'] : '';
+        error_reporting(0);
+    ini_set('display_errors', 0);
 
-  if (empty($id_user)) {
-      echo json_encode(["success" => false, "message" => "id_user wajib diisi", "laporan" => []]);
-      exit;
-  }
+    header("Content-Type: application/json");
+    require_once "koneksi.php";
 
-  $idUserInt = filter_var($id_user, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
-  if ($idUserInt === false) {
-      echo json_encode(["success" => false, "message" => "id_user tidak valid", "laporan" => []]);
-      exit;
-  }
+    $id_user = isset($_GET['id_user']) ? $_GET['id_user'] : '';
 
-  $stmt = $koneksi->prepare("SELECT id, judul, deskripsi, lokasi, status FROM laporan WHERE id_user = ? ORDER BY id DESC");
+    if (empty($id_user)) {
+        // Fallback cek POST
+        $id_user = isset($_POST['id_user']) ? $_POST['id_user'] : '';
+    }
 
-  $stmt->bind_param("i", $idUserInt);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    if (empty($id_user)) {
+        echo json_encode(["success" => false, "message" => "id_user wajib diisi", "laporan" => []]);
+        exit;
+    }
 
-  $laporan = [];
-  while ($row = $result->fetch_assoc()) {
-      $laporan[] = $row;
-  }
+    $idUserInt = filter_var($id_user, FILTER_VALIDATE_INT);
+    if ($idUserInt === false) {
+        echo json_encode(["success" => false, "message" => "id_user tidak valid", "laporan" => []]);
+        exit;
+    }
 
-  echo json_encode(["success" => true, "laporan" => $laporan]);
+    // Tambahkan foto_bukti di SELECT
+    // Sesuaikan nama kolom ID: id_laporan atau id
+    $stmt = $koneksi->prepare("SELECT id, judul, deskripsi, foto_bukti, lokasi, status FROM laporan WHERE id_user = ? ORDER BY id DESC");
 
-  $stmt->close();
-  $koneksi->close();
+    $stmt->bind_param("i", $idUserInt);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    $laporan = [];
+    while ($row = $result->fetch_assoc()) {
+        $laporan[] = $row;
+    }
+
+    echo json_encode(["success" => true, "laporan" => $laporan]);
+
+    $stmt->close();
+    $koneksi->close();
 ?>
