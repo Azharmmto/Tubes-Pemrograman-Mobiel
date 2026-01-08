@@ -31,45 +31,39 @@ import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    // ... (Variabel lain tetap sama)
     private RecyclerView rvLaporan;
     private LinearLayout tvEmpty;
     private FloatingActionButton fabAdd;
     private final List<Laporan> laporanList = new ArrayList<>();
     private LaporanAdapter adapter;
-
-    // Variabel untuk Drawer/Sidebar
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    private TextView tvNavName; // Nama di header sidebar
+    private TextView tvNavName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // Inisialisasi Toolbar
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); // Pastikan ini ada karena kita pakai NoActionBar di Manifest
 
-        // Inisialisasi Drawer
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Toggle Hamburger Icon
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Update Nama di Header Sidebar
         View headerView = navigationView.getHeaderView(0);
         tvNavName = headerView.findViewById(R.id.tvNavName);
         updateHeaderInfo();
 
-        // Komponen Dashboard Lama
         rvLaporan = findViewById(R.id.rvLaporan);
         tvEmpty = findViewById(R.id.tvEmpty);
         fabAdd = findViewById(R.id.fabAdd);
@@ -81,6 +75,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         fabAdd.setOnClickListener(v -> startActivity(new Intent(DashboardActivity.this, BuatLaporanActivity.class)));
     }
 
+    // ... (onNavigationItemSelected, onBackPressed, updateHeaderInfo TETAP SAMA)
+
     private void updateHeaderInfo() {
         String nama = SharedPrefManager.getInstance(this).getNamaLengkap();
         tvNavName.setText(nama);
@@ -89,17 +85,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onResume() {
         super.onResume();
-        updateHeaderInfo(); // Update nama kalau habis edit profil
+        updateHeaderInfo();
         fetchLaporan();
     }
 
-    // Logic saat menu diklik
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.nav_home) {
-            // Sudah di dashboard, tutup aja
         } else if (id == R.id.nav_edit_profile) {
             startActivity(new Intent(DashboardActivity.this, EditProfileActivity.class));
         } else if (id == R.id.nav_logout) {
@@ -108,12 +101,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
             finish();
         }
-
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    // Handle tombol back agar menutup drawer dulu jika terbuka
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -136,6 +127,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 response -> {
+
+                    System.out.println("Azhar DEBUG SERVER RESPONSE: " + response);
+
                     try {
                         JSONObject obj = new JSONObject(response);
                         laporanList.clear();
@@ -143,18 +137,24 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                             JSONArray arr = obj.getJSONArray("laporan");
                             for (int i = 0; i < arr.length(); i++) {
                                 JSONObject item = arr.getJSONObject(i);
+
+                                // UPDATE: Ambil kolom foto_bukti (bisa null/kosong)
+                                String foto = item.optString("foto_bukti", "");
+
                                 laporanList.add(new Laporan(
-                                        item.getInt("id"), // Sesuaikan dengan kolom DB (id atau id_laporan)
+                                        item.getInt("id"),
                                         item.getString("judul"),
                                         item.getString("deskripsi"),
                                         item.getString("lokasi"),
-                                        item.getString("status")
+                                        item.getString("status"),
+                                        foto // Masukkan foto ke model
                                 ));
                             }
                         }
                         adapter.notifyDataSetChanged();
                         toggleEmpty();
                     } catch (JSONException e) {
+                        e.printStackTrace(); // Cek logcat jika error parsing
                         Toast.makeText(getApplicationContext(), "Kesalahan parsing data", Toast.LENGTH_SHORT).show();
                     }
                 },

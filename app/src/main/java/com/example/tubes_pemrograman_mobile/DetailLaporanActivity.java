@@ -1,14 +1,18 @@
 package com.example.tubes_pemrograman_mobile;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
@@ -20,6 +24,7 @@ import java.util.Map;
 public class DetailLaporanActivity extends AppCompatActivity {
 
     private TextView tvJudul, tvDeskripsi, tvLokasi, tvStatus, tvTanggapan, tvPetugas;
+    private ImageView ivFotoBukti;
     private int idLaporan;
 
     @Override
@@ -27,7 +32,6 @@ public class DetailLaporanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_laporan);
 
-        // tombol back
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Detail Laporan");
@@ -39,17 +43,53 @@ public class DetailLaporanActivity extends AppCompatActivity {
         tvStatus = findViewById(R.id.tvDetailStatus);
         tvTanggapan = findViewById(R.id.tvIsiTanggapan);
         tvPetugas = findViewById(R.id.tvNamaPetugas);
+        ivFotoBukti = findViewById(R.id.ivFotoBukti);
 
         idLaporan = getIntent().getIntExtra("id_laporan", -1);
-        tvJudul.setText(getIntent().getStringExtra("judul"));
-        tvDeskripsi.setText(getIntent().getStringExtra("deskripsi"));
-        tvLokasi.setText(getIntent().getStringExtra("lokasi"));
-        tvStatus.setText(getIntent().getStringExtra("status"));
+        String judul = getIntent().getStringExtra("judul");
+        String deskripsi = getIntent().getStringExtra("deskripsi");
+        String lokasi = getIntent().getStringExtra("lokasi");
+        String status = getIntent().getStringExtra("status");
+        String fotoBukti = getIntent().getStringExtra("foto_bukti");
+
+        tvJudul.setText(judul);
+        tvDeskripsi.setText(deskripsi);
+        tvLokasi.setText(lokasi);
+        tvStatus.setText(status);
+
+        // Load Foto Jika Ada
+        if (fotoBukti != null && !fotoBukti.isEmpty()) {
+            ivFotoBukti.setVisibility(View.VISIBLE);
+            // URL Gambar: IP Laptop + path folder upload
+            // Contoh: http://192.168.1.5/laporpak_api/uploads/laporan/nama_file.jpg
+            // Kita ambil base URL dari URLs.java, tapi potong bagian "laporpak_api/" kalau perlu
+            // Asumsi BASE_URL di URLs.java sudah ada slash di akhir
+
+            // Kita construct URL manual karena BASE_URL biasanya menunjuk root API
+            // Ambil BASE_URL dari class URLs, buang nama file php (tidak perlu, karena BASE_URL = folder api)
+            String urlGambar = URLs.URL_LOGIN.replace("login_user.php", "") + "uploads/laporan/" + fotoBukti;
+
+            loadFoto(urlGambar);
+        } else {
+            ivFotoBukti.setVisibility(View.GONE);
+        }
 
         fetchTanggapan();
     }
 
-    // ketika tombol di click
+    private void loadFoto(String url) {
+        ImageRequest imageRequest = new ImageRequest(
+                url,
+                response -> ivFotoBukti.setImageBitmap(response),
+                0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
+                error -> {
+                    // Jika gagal load gambar (misal 404), sembunyikan atau biarkan placeholder
+                    Toast.makeText(DetailLaporanActivity.this, "Gagal memuat gambar", Toast.LENGTH_SHORT).show();
+                }
+        );
+        VolleySingleton.getInstance(this).addToRequestQueue(imageRequest);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

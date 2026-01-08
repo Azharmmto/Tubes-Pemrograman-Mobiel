@@ -1,12 +1,23 @@
 package com.example.tubes_pemrograman_mobile;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.textfield.TextInputEditText;
@@ -14,39 +25,84 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private TextInputEditText etNama, etEmail, etHp;
-    private Button btnSimpan;
+    private Button btnSimpan, btnGantiFoto;
+    private ImageView ivProfil;
+    private Bitmap bitmapProfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        // tombol back
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Edit Profil");
-        }
-
         etNama = findViewById(R.id.etEditNama);
         etEmail = findViewById(R.id.etEditEmail);
         etHp = findViewById(R.id.etEditHP);
         btnSimpan = findViewById(R.id.btnSimpanProfil);
+        btnGantiFoto = findViewById(R.id.btnGantiFoto);
+        ivProfil = findViewById(R.id.ivProfil);
 
-        // Isi form dengan data saat ini (Nama diambil dari SharedPref)
-        // Idealnya Anda buat API get_user_detail.php untuk ambil email/hp juga
-        // Di sini kita set Nama dulu sebagai contoh
         etNama.setText(SharedPrefManager.getInstance(this).getNamaLengkap());
+        // Idealnya load data lain dan foto profil dari API "get_user_detail" di sini
 
+        btnGantiFoto.setOnClickListener(v -> pilihFoto());
         btnSimpan.setOnClickListener(v -> updateProfil());
     }
 
-    // ketika back di click
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri imageUri = result.getData().getData();
+                    try {
+                        bitmapProfil = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                        ivProfil.setImageBitmap(bitmapProfil);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Gagal memuat gambar", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
+
+    private void pilihFoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        imagePickerLauncher.launch(intent);
+    }
+
+    private String imageToString(Bitmap bitmap) {
+        if (bitmap == null) return "";
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float ratioBitmap = (float) width / (float) height;
+        int maxSize = 512; // Foto profil lebih kecil saja
+
+        if (width > maxSize || height > maxSize) {
+            if (ratioBitmap > 1) {
+                width = maxSize;
+                height = (int) (width / ratioBitmap);
+            } else {
+                height = maxSize;
+                width = (int) (height * ratioBitmap);
+            }
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        }
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+        byte[] imgBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imgBytes, Base64.DEFAULT);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -77,10 +133,9 @@ public class EditProfileActivity extends AppCompatActivity {
                     try {
                         JSONObject obj = new JSONObject(response);
                         if (obj.getBoolean("success")) {
-                            // Update SharedPref agar nama di Dashboard berubah
                             SharedPrefManager.getInstance(getApplicationContext()).updateNama(nama);
                             Toast.makeText(this, obj.getString("message"), Toast.LENGTH_SHORT).show();
-                            finish(); // Kembali ke dashboard
+                            finish();
                         } else {
                             Toast.makeText(this, obj.getString("message"), Toast.LENGTH_SHORT).show();
                         }
@@ -101,9 +156,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 params.put("nama", nama);
                 params.put("email", email);
                 params.put("no_hp", hp);
+
+                if (bitmapProfil != null) {
+                    params.put("foto", imageToString(bitmapProfil));
+                }
                 return params;
             }
         };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }

@@ -17,7 +17,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvItemJudul"
+            android:id="@+id/tvJudul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -43,7 +43,7 @@
                 android:layout_marginEnd="6dp" />
 
             <TextView
-                android:id="@+id/tvItemStatus"
+                android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
@@ -73,7 +73,7 @@
                 android:layout_marginEnd="6dp" />
 
             <TextView
-                android:id="@+id/tvItemLokasi"
+                android:id="@+id/tvLokasi"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
