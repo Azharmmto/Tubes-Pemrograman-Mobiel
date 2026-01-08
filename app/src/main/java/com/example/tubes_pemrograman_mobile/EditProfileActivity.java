@@ -152,7 +152,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("id_user", String.valueOf(idUser));
+                params.put("id", String.valueOf(idUser));
                 params.put("nama", nama);
                 params.put("email", email);
                 params.put("no_hp", hp);

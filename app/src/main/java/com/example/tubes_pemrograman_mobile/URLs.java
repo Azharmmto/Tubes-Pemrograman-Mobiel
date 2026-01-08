@@ -7,5 +7,5 @@ public class URLs {
     public static final String URL_ADD_LAPORAN = BASE_URL + "add_laporan.php";
     public static final String URL_GET_LAPORAN = BASE_URL + "get_all_laporan.php";
     public static final String URL_GET_TANGGAPAN = BASE_URL + "get_detail_tanggapan.php";
-    public static final String URL_UPDATE_PROFIL = BASE_URL + "update_profil.php";
+    public static final String URL_UPDATE_PROFIL = BASE_URL + "update_profile.php";
 }
